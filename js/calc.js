@@ -155,8 +155,8 @@
     pairs.forEach(function (p) { dl.appendChild(el("dt", null, p[0])); dl.appendChild(el("dd", null, p[1])); });
     return dl;
   }
-  function headline(label, big) { var f = document.createDocumentFragment(); f.appendChild(el("p", "label", label)); f.appendChild(el("p", "big", big)); return f; }
-  function note(t) { return el("p", "note", t); }
+  function headline(label, big) { var f = document.createDocumentFragment(); f.appendChild(el("p", "hbm-label", label)); f.appendChild(el("p", "hbm-big", big)); return f; }
+  function note(t) { return el("p", "hbm-note", t); }
 
   var renderers = {
     taxsave: function (r, out) {
@@ -167,7 +167,7 @@
         out.appendChild(headline("Extra taxes to qualify with your tax return", usd0.format(r.extraTaxTotal)));
         out.appendChild(note("That is the estimated extra tax you would pay across " + r.yearsReviewed + " tax year" + (r.yearsReviewed > 1 ? "s" : "") + " by giving up about " + usd0.format(r.gap) + " of legitimate deductions each year to show enough income."));
       }
-      out.appendChild(el("h3", "out-h", "How the gap works"));
+      out.appendChild(el("h3", "hbm-out-h", "How the gap works"));
       out.appendChild(rows([
         ["Income needed to qualify, per year", usd0.format(r.reqAnnual)],
         ["Income on your tax return", usd0.format(r.taxable)],
@@ -175,7 +175,7 @@
         ["Combined tax rate used", r.combined.toFixed(1) + "%"],
         ["Extra tax per tax year", usd0.format(r.extraTaxYear)]
       ]));
-      out.appendChild(el("h3", "out-h", "What the bank statement loan costs instead"));
+      out.appendChild(el("h3", "hbm-out-h", "What the bank statement loan costs instead"));
       out.appendChild(rows([
         ["Tax-return loan: rate and monthly payment", r.rate.toFixed(3) + "%  |  " + usd0.format(r.convTotal)],
         ["Bank statement loan: rate and monthly payment", r.bsRate.toFixed(3) + "%  |  " + usd0.format(r.bsTotal)],
@@ -186,7 +186,7 @@
       if (r.qualifies) verdict = "You would not need to give up deductions on these numbers, so the comparison is mostly about the rate and payment above.";
       else if (r.net > 0) verdict = "On these numbers, the extra taxes you would pay to qualify (" + usd0.format(r.extraTaxTotal) + ") are more than the extra cost of the bank statement loan over " + r.hold + " year" + (r.hold > 1 ? "s" : "") + ". Net difference: " + usd0.format(r.net) + " in the bank statement loan's favor.";
       else verdict = "On these numbers, the bank statement loan costs " + usd0.format(Math.abs(r.net)) + " more over " + r.hold + " year" + (r.hold > 1 ? "s" : "") + " than the one-time taxes to qualify. A longer hold favors the tax-return route; a shorter one favors the bank statement loan.";
-      out.appendChild(el("p", "verdict", verdict));
+      out.appendChild(el("p", "hbm-verdict", verdict));
       if (!r.qualifies && r.breakEven !== null) out.appendChild(note("Break-even: the bank statement loan's higher cost catches up with the extra taxes after about " + r.breakEven.toFixed(1) + " years. Many borrowers refinance sooner when their returns catch up, which changes this math."));
       out.appendChild(note("Not counted: a bigger mortgage interest deduction. Paying more interest to deduct it still costs more than it saves. Talk with your CPA about your actual deductions."));
     },
@@ -250,12 +250,12 @@
         e.preventDefault();
         var r = root.HBMCalc[kind](readForm(form));
         out.textContent = "";
-        if (r.errors.length) { showErrors(r.errors); out.appendChild(el("p", "placeholder", emptyMsg)); return; }
+        if (r.errors.length) { showErrors(r.errors); out.appendChild(el("p", "hbm-placeholder", emptyMsg)); return; }
         showErrors([]);
         renderers[kind](r, out);
       });
       form.addEventListener("reset", function () {
-        window.setTimeout(function () { showErrors([]); out.textContent = ""; out.appendChild(el("p", "placeholder", emptyMsg)); }, 0);
+        window.setTimeout(function () { showErrors([]); out.textContent = ""; out.appendChild(el("p", "hbm-placeholder", emptyMsg)); }, 0);
       });
       var ex = form.querySelector("[data-example-btn]");
       if (ex) ex.addEventListener("click", function () {

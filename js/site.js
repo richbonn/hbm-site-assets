@@ -2,22 +2,22 @@
 (function () {
   "use strict";
   document.documentElement.classList.add("js");
-  var btn = document.querySelector(".nav-toggle");
+  var btn = document.querySelector(".hbm-nav-toggle");
   var nav = document.getElementById("site-nav");
   if (!btn || !nav) return;
   function setOpen(open) {
-    nav.classList.toggle("open", open);
+    nav.classList.toggle("hbm-open", open);
     btn.setAttribute("aria-expanded", open ? "true" : "false");
   }
   btn.addEventListener("click", function () { setOpen(btn.getAttribute("aria-expanded") !== "true"); });
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && nav.classList.contains("open")) { setOpen(false); btn.focus(); }
+    if (e.key === "Escape" && nav.classList.contains("hbm-open")) { setOpen(false); btn.focus(); }
   });
 })();
 
 (function () {
   document.querySelectorAll("[data-yt]").forEach(function (box) {
-    var btn = box.querySelector(".video-play");
+    var btn = box.querySelector(".hbm-video-play");
     if (!btn) return;
     btn.addEventListener("click", function () {
       var f = document.createElement("iframe");
